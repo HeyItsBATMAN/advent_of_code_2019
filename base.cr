@@ -9,18 +9,13 @@ INPUT = File
 # .map(&.to_i)
 # .map{|i| i }
 
-class Solution
-  def solve
-    # puts INPUT
-    puts Benchmark.realtime { puts "Part 1 #{part1}" }
-    puts Benchmark.realtime { puts "Part 2 #{part2}" }
-  end
+# puts INPUT
 
-  def part1
-  end
-
-  def part2
-  end
+def part1
 end
 
-Solution.new.solve
+def part2
+end
+
+puts Benchmark.realtime { puts "Part 1 #{part1}" }
+puts Benchmark.realtime { puts "Part 2 #{part2}" }
