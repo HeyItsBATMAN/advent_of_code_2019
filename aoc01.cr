@@ -1,7 +1,7 @@
 require "benchmark"
 
 DAY   = PROGRAM_NAME.match(/aoc\d{2}/).not_nil![0]
-INPUT = File.read("#{DAY}.txt").split("\n").reject(&.empty?).map(&.to_i)
+INPUT = File.read_lines("#{DAY}.txt").map(&.to_i)
 
 def part1
   INPUT.sum { |mass| reduce(mass) }
