@@ -9,64 +9,41 @@ def get_val(arr, mode, pos)
 end
 
 def solve(id)
-  i, arr = 0, INPUT.dup
-  skip = [0, 4, 4, 2, 2, 3, 3, 4, 4]
-
+  i, arr, skip = 0, INPUT.dup, [0, 4, 4, 2, 2, 3, 3, 4, 4]
   until arr[i] == 99
-    chars = "0000#{arr[i]}".chars.last(5)
-    # puts "#{chars.join}\t#{arr[i, 4]}"
-    op = chars.pop(2).reject { |n| n == 0 }.join.to_i
-    chars = chars.reverse.map(&.to_i)
+    chars = "0000#{arr[i]}".chars.last(5).reverse.map(&.to_i)
+    op = chars.shift(2).reject { |n| n == 0 }.join.to_i
 
-    if op == 1 || op == 2
-      val0 = get_val(arr, chars[0], i + 1)
-      val1 = get_val(arr, chars[1], i + 2)
-      arr[arr[i + 3]] = op == 1 ? (val0 + val1) : (val0 * val1)
-    elsif op == 3
+    case op
+    when 1, 2
+      vals = [get_val(arr, chars[0], i + 1), get_val(arr, chars[1], i + 2)]
+      arr[arr[i + 3]] = op == 1 ? vals.sum : vals.product
+    when 3
       arr[arr[i + 1]] = id
-    elsif op == 4
+    when 4
       val = get_val(arr, chars[0], i + 1)
-      if val != 0
-        puts val
-        return
-      end
-    elsif op == 5
+      return val if val != 0
+    when 5
       if get_val(arr, chars[0], i + 1) != 0
         i = get_val(arr, chars[1], i + 2)
         next
       end
-    elsif op == 6
+    when 6
       if get_val(arr, chars[0], i + 1) == 0
         i = get_val(arr, chars[1], i + 2)
         next
       end
-    elsif op == 7
-      if get_val(arr, chars[0], i + 1) < get_val(arr, chars[1], i + 2)
-        arr[arr[i + 3]] = 1
-      else
-        arr[arr[i + 3]] = 0
-      end
-    elsif op == 8
-      if get_val(arr, chars[0], i + 1) == get_val(arr, chars[1], i + 2)
-        arr[arr[i + 3]] = 1
-      else
-        arr[arr[i + 3]] = 0
-      end
-    else
-      puts "op #{op}"
-      return
+    when 7
+      arr[arr[i + 3]] =
+        get_val(arr, chars[0], i + 1) < get_val(arr, chars[1], i + 2) ? 1 : 0
+    when 8
+      arr[arr[i + 3]] =
+        get_val(arr, chars[0], i + 1) == get_val(arr, chars[1], i + 2) ? 1 : 0
     end
+
     i += skip[op]
   end
 end
 
-def part1
-  solve(1)
-end
-
-def part2
-  solve(5)
-end
-
-puts Benchmark.realtime { puts "Part 1 #{part1}" }
-puts Benchmark.realtime { puts "Part 2 #{part2}" }
+puts Benchmark.realtime { puts "Part 1 #{solve(1)}" }.total_milliseconds
+puts Benchmark.realtime { puts "Part 2 #{solve(5)}" }.total_milliseconds
