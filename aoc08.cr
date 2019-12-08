@@ -1,4 +1,5 @@
 require "benchmark"
+require "colorize"
 
 WIDTH  = 25
 HEIGHT =  6
@@ -27,10 +28,12 @@ def part2
   image
 end
 
+colors = [:light_red, :light_green, :light_yellow, :light_blue, :light_magenta, :light_cyan]
+
 puts Benchmark.realtime { puts "Part 1 #{part1}" }.total_milliseconds
 puts Benchmark.realtime {
   puts "Part 2"
-  part2.each { |line|
-    puts line.join.gsub("0", " ").gsub("1", "#")
+  part2.map_with_index { |line, i|
+    puts line.join.gsub("0", " ").gsub("1", "█").colorize(colors[i])
   }
 }.total_milliseconds
