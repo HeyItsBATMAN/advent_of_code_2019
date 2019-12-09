@@ -29,5 +29,5 @@ def part2
   }.min
 end
 
-puts Benchmark.realtime { puts "Part 1 #{part1}" }
-puts Benchmark.realtime { puts "Part 2 #{part2}" }
+puts Benchmark.realtime { puts "Part 1 #{part1}" }.total_milliseconds
+puts Benchmark.realtime { puts "Part 2 #{part2}" }.total_milliseconds
