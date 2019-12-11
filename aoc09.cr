@@ -4,11 +4,11 @@ DAY   = PROGRAM_NAME.match(/aoc\d{2}/).not_nil![0]
 INPUT = File.read_lines("#{DAY}.txt").join.split(",").map(&.to_i64)
 
 class Computer
-  @arr : Array(Int64)
+  @arr : Hash(Int64, Int64)
   @skip = [0, 4, 4, 2, 2, 3, 3, 4, 4, 2]
 
-  def initialize(@inputs = [] of Int64, @ip = 0_i64, @arr = INPUT.dup, @base = 0)
-    (@arr.size*16).times { |_| @arr << 0_i64 }
+  def initialize(@inputs = [] of Int64, @ip = 0_i64, @base = 0)
+    @arr = INPUT.map_with_index { |n, i| {i.to_i64, n} }.to_h
     @chars = [] of Int32
   end
 
@@ -20,6 +20,8 @@ class Computer
     pos = @ip + 1 + offset
     mode = @chars[offset]
     val = @arr[pos]
+
+    @arr[val] = 0 if !@arr[val]?
 
     return val if mode == 1
     return @arr[val + @base] if mode == 2
