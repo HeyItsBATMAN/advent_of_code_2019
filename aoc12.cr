@@ -43,28 +43,6 @@ def part1
     .sum { |moon| moon.pos.map(&.abs).sum * moon.vel.map(&.abs).sum }
 end
 
-# https://en.wikipedia.org/wiki/Greatest_common_divisor#Binary_GCD_algorithm
-def gcd(u, v)
-  return u if (u == v)
-  return v if (u == 0)
-  return u if (v == 0)
-
-  if (u.even?)
-    return gcd(u >> 1, v) if (v.odd?)
-    return gcd(u >> 1, v >> 1) << 1
-  end
-
-  return gcd(u, v >> 1) if (v.even?)
-
-  return gcd((u - v) >> 1, v) if (u > v)
-  return gcd((v - u) >> 1, u)
-end
-
-# https://en.wikipedia.org/wiki/Least_common_multiple#Using_the_greatest_common_divisor
-def lcm(u, v)
-  (u * v) // gcd(u, v)
-end
-
 def part2
   moons = INPUT.dup.map { |moon| Moon.new(moon) }
   origs = [0, 0, 0]
@@ -95,7 +73,7 @@ def part2
     } }
   end
   origs = origs.map(&.to_u64)
-  lcm(origs[0], lcm(origs[1], origs[2]))
+  origs[0].lcm(origs[1].lcm(origs[2]))
 end
 
 puts Benchmark.realtime { puts "Part 1 #{part1}" }.total_milliseconds
